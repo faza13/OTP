@@ -1,0 +1,23 @@
+{
+    "name": "faza13/otp",
+    "description": "OTP validation",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Faza",
+            "email": "fazaa.13@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Faza13\\OTP\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0.0",
+        "guzzlehttp/guzzle": "^6.2.*|^7.0"
+    }
+}
