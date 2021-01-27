@@ -24,6 +24,9 @@ class OTPFirebase implements OTPInterface
 
     public function request($phone, array $options = [])
     {
+
+        $phone = $this->phoneFormated($phone);
+
         $params = [
             "phoneNumber" => $phone,
             "iosReceipt" => $options['iosReceipt'],
@@ -50,6 +53,8 @@ class OTPFirebase implements OTPInterface
 
     public function validate($phone, $code, $options = [])
     {
+        $phone = $this->phoneFormated($phone);
+
         $params = [
             "sessionInfo" => $options['sessionInfo'],
             "phoneNumber" => $phone,
@@ -74,6 +79,17 @@ class OTPFirebase implements OTPInterface
             'success' => true,
         ];
     }
+
+    public function phoneFormated($phone)
+    {
+        $phone = preg_replace('/^0/', '', preg_replace('/\D/', '', $phone));
+        if(!preg_match('/^62/', $phone))
+            $phone = '62' . $phone;
+
+
+        return '+'.$phone;
+    }
+
 
     /**
      * @param string $action

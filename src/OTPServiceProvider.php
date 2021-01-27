@@ -11,7 +11,7 @@ class OTPServiceProvider extends ServiceProvider
 
     public function boot(){
         $this->publishes([
-            __DIR__.'/config/otp.php' => $this->app->basePath('config/otp.php'),
+            __DIR__ . '/config/otp.php' => $this->app->basePath('config/otp.php'),
         ]);
 
     }
@@ -24,7 +24,8 @@ class OTPServiceProvider extends ServiceProvider
     public function register()
     {
 
-        $this->mergeConfigFrom(__DIR__ . '/config/otp.php', 'otp');
+        $this->mergeConfigFrom(__DIR__ . '/../config/otp.php', 'otp');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->app->singleton(OTPInterface::class, function ($app) {
             switch ($app->make('config')->get('otp.default')) {
