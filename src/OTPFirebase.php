@@ -27,22 +27,29 @@ class OTPFirebase implements OTPInterface
 
         $phone = $this->phoneFormated($phone);
 
-        $params = [
-            "phoneNumber" => $phone,
-            "iosReceipt" => $options['iosReceipt'],
-            "iosSecret" => $options['iosSecret'],
-            "recaptchaToken" => $options['recaptchaToken'],
-            "tenantId" => $options['tenantId']
-        ];
+        $params['phoneNumber'] = $phone;
+
+        if(isset($options['iosReceipt']))
+            $params['iosReceipt'] = $options['iosReceipt'];
+
+        if(isset($options['iosSecret']))
+            $params['iosSecret'] = $options['iosSecret'];
+
+        if(isset($options['recaptchaToken']))
+            $params['recaptchaToken'] = $options['recaptchaToken'];
+
+        if(isset($options['tenantId']))
+            $params['recaptchaToken'] = $options['tenantId'];
+
         $client = new \GuzzleHttp\Client();
 
         try{
             $r = $client->request('POST', $this->getUrl('request'), [
-                'json' => $options
+                'json' => $params
             ]);
         }
         catch (\Exception $e) {
-            Throw new \Exception("Request Failed");
+            Throw new \Exception($e->getMessage());
         }
 
         $data = json_decode($r->getBody());
