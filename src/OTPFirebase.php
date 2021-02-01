@@ -5,6 +5,7 @@ namespace Faza13\OTP;
 
 
 use Faza13\OTP\Contracts\OTPInterface;
+use GuzzleHttp\Exception\RequestException;
 
 class OTPFirebase implements OTPInterface
 {
@@ -48,7 +49,15 @@ class OTPFirebase implements OTPInterface
                 'json' => $params
             ]);
         }
-        catch (\Exception $e) {
+        catch (RequestException $e) {
+            if($e->hasResponse())
+            {
+                $resp = json_decode($e->getResponse()->getBody(), true);
+                if(isset($resp['error']))
+                {
+                    Throw new \Exception($resp['error']['message']);
+                }
+            }
             Throw new \Exception($e->getMessage());
         }
 
@@ -75,11 +84,21 @@ class OTPFirebase implements OTPInterface
                 'json' => $params
             ]);
         }
-        catch (\Exception $e) {
+        catch (RequestException $e) {
+
+            if($e->hasResponse())
+            {
+                $resp = json_decode($e->getResponse()->getBody(), true);
+                if(isset($resp['error']))
+                {
+                    Throw new \Exception($resp['error']['message']);
+                }
+            }
+
             Throw new \Exception("Validation Failed");
         }
 
-        $data = json_decode($r->getBody());
+        $data = json_decode($r->getBody(), true);
 
         return [
             'phone' => $data['phoneNumber'],
